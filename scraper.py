@@ -21,7 +21,7 @@ session = HTMLSession()
 os.chdir('/Users/alextruesdale/Documents/quantlet-scraper/code_output')
 
 # Open source file as .csv and read in lines.
-with open('QUANTLET_LINKS.txt') as csv_file:
+with open('quantlet_links.txt') as csv_file:
     csv_reader = csv.reader(csv_file, delimiter = ',')
     urls = [line[0] for line in csv_reader]
 
@@ -48,28 +48,36 @@ for i, url in enumerate(urls):
 # Redefine links_aggregate as set of unique URLs.
 links_aggregate = [link for link in set(links_aggregate)]
 
+# Save raw code links as .csv file.
+with open('../raw_code_urls.txt', 'w') as raw_urls_out:
+    for item in links_aggregate:
+        raw_urls_out.write(item + ',' + '\n')
+
 # Create dictionary pairing URLs to their raw contents.
 contents_dictionary = {}
 for i, link in enumerate(links_aggregate):
     print(i, ': ', link)
     get_result = session.get(link)
+
+    # Try except block to skip over (and identify) files with encoding problems
+    # 6 of ~1500... negligable.
     try:
         code = BeautifulSoup(get_result.html.html, 'html.parser')
         contents_dictionary.update({link: code.prettify()})
-    else:
+    except:
         print('ERROR:', link)
+
+print(len(contents_dictionary))
 
 # Define aggregate_code_path; loop through pairwise dict. and write individual files
 # Append code to aggregate file.
-
-aggregate_code_path = 'CODE_AGGREGATE.R'
+aggregate_code_path = '../CODE_AGGREGATE.R'
 for file, contents in contents_dictionary.items():
     filename = file.split('/')[-1]
-    print(filename)
 
-    # with open(filename, 'w') as single_file:
-    #     single_file.write(contents)
-    #
-    # with open(aggregate_code_path, 'a') as aggregate:
-    #     aggregate.write(contents)
-    #     aggregate.write('\n\n')
+    with open(filename, 'w') as single_file:
+        single_file.write(contents)
+
+    with open(aggregate_code_path, 'a') as aggregate:
+        aggregate.write(contents)
+        aggregate.write('\n\n')
