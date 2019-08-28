@@ -1,5 +1,6 @@
-<a href = "http://quantlet.de/">
-    <img src = "https://github.com/alextruesdale/quantlet-scraper/blob/master/repository_media/Q.png" alt = "Q logo" title = "Quantlet" align = "right" height = "80" /></a>
+<a href='http://quantlet.de/'>
+  <img src='https://github.com/alextruesdale/quantlet-scraper/blob/master/repository_media/Q.png' alt='Q logo' title='Quantlet' align='right' height='80' />
+</a>
 
 # Quantlet Scraping Tool
 This is a small Python script for scraping the raw .R code of ~1500 GitHub repositories to then be used as a structured language training set for a [LSTM Neural Network](https://github.com/QuantLet/DEDA_Class_2018WS/tree/master/DEDA_Class_2018WS_Markov_LSTM_Trump_Twitter).
